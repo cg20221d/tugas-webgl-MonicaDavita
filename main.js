@@ -94,7 +94,6 @@ function main() {
     return;
   }
 
-  // Set clear color to black, fully opaque
   gl.clearColor(0.0625, 0.0273, 0.125, 1.0);  //SOFT BLACK
   //dari kiri ke kanan Red --> Green --> Blue --> Transparansi
 
@@ -609,3 +608,8 @@ function main() {
 }
 
 window.onload = main;
+
+// Catatan Tambahan:
+// 1. Mengubah hexadecimal menjadi RGB adalah dengan menggunakan fitur konversi
+// pada laman https://www.webfx.com/web-design/hex-to-rgb/ lalu membagi nilai tiap komponen dengan 256
+// 2. Untuk kombinasi warna dalam hexadecimal dicari pada laman https://colorhunt.co/palettes/yellow
