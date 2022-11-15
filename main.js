@@ -1,617 +1,484 @@
 
 function main() {
+  /** @type {HTMLCanvasElement} */
   var kanvas = document.getElementById("kanvas");
-
+  kanvas.width = kanvas.offsetWidth
+  kanvas.height = kanvas.offsetWidth
   // Initialize the GL context
-  const gl = kanvas.getContext("webgl");
+  var gl = kanvas.getContext("webgl");
+  var vertices=[];
 
   //-----------------------------------ANGKA 09 KUNING----------------------------------//
 
   var verticesNumberYellow = [
     //Inner 0
-     -0.5, 0.7, -0.5,
-     -0.5, 0.2, -0.5,
-     -0.3, 0.2, -0.5,
-     -0.3, 0.7, -0.5,
+     -0.5, 0.7, -0.5, 0.992, 0.855, 0.223, //0
+     -0.5, 0.2, -0.5, 0.992, 0.855, 0.223,
+     -0.3, 0.2, -0.5, 0.992, 0.855, 0.223,
+     -0.3, 0.7, -0.5, 0.992, 0.855, 0.223, //3
 
     //Outer 0
-    -0.7, 0.9, 0.5,
-    -0.7, 0.0, 0.5, 
-    -0.1, 0.0, 0.5, 
-    -0.1, 0.9, 0.5,
+    -0.7, 0.9, 0.5, 0.992, 0.855, 0.223, //4
+    -0.7, 0.0, 0.5, 0.992, 0.855, 0.223,
+    -0.1, 0.0, 0.5, 0.992, 0.855, 0.223,
+    -0.1, 0.9, 0.5, 0.992, 0.855, 0.223, //7
 
     //Outer 9
-    -0.4, 0.0, 0.4,
-    -0.4, -0.2, 0.4,
-    0.5, -0.2, 0.5,
-    0.5, 0.9, 0.5,
-    -0.1, 0.9, 0.1,
+    -0.4, 0.0, 0.4, 0.992, 0.855, 0.223, //8
+    -0.4, -0.2, 0.4, 0.992, 0.855, 0.223,
+    0.5, -0.2, 0.5, 0.992, 0.855, 0.223,
+    0.5, 0.9, 0.5, 0.992, 0.855, 0.223,
+    -0.1, 0.9, 0.1, 0.992, 0.855, 0.223, //12
+
     //Outer 9
-    -0.1, 0.20, 0.1,
-    0.2, 0.20, 0.2,
-    0.2, 0.0, 0.2,
-    -0.1, 0.0, 0.1,
+    -0.1, 0.20, 0.1, 0.992, 0.855, 0.223, //13
+    0.2, 0.20, 0.2, 0.992, 0.855, 0.223, 
+    0.2, 0.0, 0.2, 0.992, 0.855, 0.223,
+    -0.1, 0.0, 0.1, 0.992, 0.855, 0.223, //16
 
     //Inner 9
-    0.04, 0.75, -0.04,
-    0.34, 0.75, -0.34,
-    0.34, 0.35, -0.34,
-    0.04, 0.35, -0.04,
+    0.04, 0.75, -0.04, 0.992, 0.855, 0.223, //17
+    0.34, 0.75, -0.34, 0.992, 0.855, 0.223,
+    0.34, 0.35, -0.34, 0.992, 0.855, 0.223,
+    0.04, 0.35, -0.04, 0.992, 0.855, 0.223, //20
   ];
 
-  var buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticesNumberYellow), gl.STATIC_DRAW);
+//--------------------------------ANGKA 0 PUTIH----------------------//
 
-  //vertex shader
-  var vertexShaderCodeNumberYellow = `
-    attribute vec3 aPosition;
-    void main() { 
-      float x = aPosition.x;
-      float y = aPosition.y;
-      float z = aPosition.z;
-      gl_PointSize = 10.0;
-      gl_Position = vec4(x, y, z, 1.0);
-    }
-    `;
+var verticesNumberWhite = [
+  //Upper 0
+  -0.7, 0.9, -0.7, 1, 1, 1, //21
+  -0.6, 0.95, -0.6, 1, 1, 1,
+  0.0, 0.95, 0.0, 1, 1, 1,
+  -0.1, 0.9, -0.1, 1, 1, 1, //24
 
-  var vertexShaderObject = gl.createShader(gl.VERTEX_SHADER);
-  gl.shaderSource(vertexShaderObject, vertexShaderCodeNumberYellow);
-  gl.compileShader(vertexShaderObject);   //sampai sini jadi file .o
+  //Upper-Right 0
+  0.0, 0.95, 0, 1, 1, 1, //25
+  0.0, 0.9, 0, 1, 1, 1, //26
 
-  //fragment shader
-  var fragmentShaderCodeNumberYellow = `
-    void main() {
-      precision mediump float;
-      float r = 0.992;
-      float g = 0.855;
-      float b = 0.223;
-      float a = 1.0;
-      gl_FragColor = vec4(r, g, b, a);
-    }
-    `;
+  //Lower-Right 0
+  -0.1, 0.0, -0.1, 1, 1, 1, //27
+  0.0, 0.1, 0, 1, 1, 1,
+  0.0, 0.2, 0, 1, 1, 1, //29
+];
 
-  var fragmentShaderObject = gl.createShader(gl.FRAGMENT_SHADER);
-  gl.shaderSource(fragmentShaderObject, fragmentShaderCodeNumberYellow);
-  gl.compileShader(fragmentShaderObject);   //sampai sini jadi file .o
+//--------------------------------ANGKA 9 PINK----------------------//
 
-  var shaderProgram = gl.createProgram(); //wadah executeable shadernya nanti (.exe)
-  gl.attachShader(shaderProgram, vertexShaderObject);
-  gl.attachShader(shaderProgram, fragmentShaderObject);
+var verticesNumberPink = [
+  //Sisi Kiri 9
+  0.04, 0.75, -0.04, 0.977, 0.184, 0.707, //30
+  0.01, 0.65, -0.01, 0.977, 0.184, 0.707,
+  0.01, 0.25, 0.01, 0.977, 0.184, 0.707,
+  0.04, 0.35, 0.04, 0.977, 0.184, 0.707, //33
 
-  gl.linkProgram(shaderProgram);
-  gl.useProgram(shaderProgram);
+  //Right 9
+  0.34, 0.75, -0.34, 0.977, 0.184, 0.707, //34
+  0.30, 0.65, -0.3, 0.977, 0.184, 0.707,
+  0.30, 0.25, 0.3, 0.977, 0.184, 0.707,
+  0.34, 0.35, 0.34, 0.977, 0.184, 0.707, //37
 
-  // Mengajari GPU bagaimana caranya mengoleksi nilai posisi dari ARRAY_BUFFER
-  // Untuk setiap verteks yang sedang diproses
+  //Upper 9
+  0.01, 0.65, 0.01, 0.977, 0.184, 0.707, //38
+  0.30, 0.65, 0.3, 0.977, 0.184, 0.707, //39
 
-  var aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
-  gl.vertexAttribPointer(aPosition, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(aPosition);
-
-  // Only continue if WebGL is available and working
-  if (gl === null) {
-    alert("Unable to initialize WebGL. Your browser or machine may not support it.");
-    return;
-  }
-
-  gl.clearColor(0.0625, 0.0273, 0.125, 1.0);  //SOFT BLACK
-  //dari kiri ke kanan Red --> Green --> Blue --> Transparansi
-
-  // Clear the color buffer with specified clear color
-  gl.clear(gl.COLOR_BUFFER_BIT);
-
-  //0
-  gl.drawArrays(gl.LINE_LOOP, 0, 4);
-  gl.drawArrays(gl.LINE_LOOP, 4, 4);
-
-  //9
-  gl.drawArrays(gl.LINE_STRIP, 8, 5);
-  gl.drawArrays(gl.LINE_STRIP, 13, 4);
-  gl.drawArrays(gl.LINE_LOOP, 17, 4);
-
-  //--------------------------------ANGKA 0 PUTIH----------------------//
-
-  var verticesNumberWhite = [
-    //Upper 0
-    -0.7, 0.9, -0.7,
-    -0.6, 0.95, -0.6,
-    0.0, 0.95, 0.0,
-    -0.1, 0.9, -0.1,
-
-    //Upper-Right 0
-    0.0, 0.95, 0,
-    0.0, 0.9, 0,
-
-    //Lower-Right 0
-    -0.1, 0.0, -0.1,
-    0.0, 0.1, 0,
-    0.0, 0.2, 0,
-  ];
-
-  var buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticesNumberWhite), gl.STATIC_DRAW);
-
-  //vertex shader
-  var vertexShaderCodeNumberWhite = `
-    attribute vec3 bPosition;
-    void main() { 
-      float x = bPosition.x;
-      float y = bPosition.y;
-      float z = bPosition.z;
-      gl_PointSize = 10.0;
-      gl_Position = vec4(x, y, z, 1.0);
-    }
-    `;
-
-  var vertexShaderObject2 = gl.createShader(gl.VERTEX_SHADER);
-  gl.shaderSource(vertexShaderObject2, vertexShaderCodeNumberWhite);
-  gl.compileShader(vertexShaderObject2);   //sampai sini jadi file .o
-
-  //fragment shader
-  var fragmentShaderCodeNumberWhite = `
-    void main() {
-      precision mediump float;
-      float r = 1.0;
-      float g = 1.0;
-      float b = 1.0;
-      float a = 1.0;
-      gl_FragColor = vec4(r, g, b, a);
-    }
-    `;
-
-  var fragmentShaderObject2 = gl.createShader(gl.FRAGMENT_SHADER);
-  gl.shaderSource(fragmentShaderObject2, fragmentShaderCodeNumberWhite);
-  gl.compileShader(fragmentShaderObject2);   //sampai sini jadi file .o
-
-  var shaderProgram2 = gl.createProgram(); //wadah executeable shadernya nanti (.exe)
-  gl.attachShader(shaderProgram2, vertexShaderObject2);
-  gl.attachShader(shaderProgram2, fragmentShaderObject2);
-
-  gl.linkProgram(shaderProgram2);
-  gl.useProgram(shaderProgram2);
-
-  // Mengajari GPU bagaimana caranya mengoleksi nilai posisi dari ARRAY_BUFFER
-  // Untuk setiap verteks yang sedang diproses
-
-  var bPosition = gl.getAttribLocation(shaderProgram2, "bPosition");
-  gl.vertexAttribPointer(bPosition, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(bPosition);
-
-  //WHITE 0
-  gl.drawArrays(gl.LINE_STRIP, 0, 4);
-  gl.drawArrays(gl.LINES, 4, 2);
-  gl.drawArrays(gl.LINE_STRIP, 6, 3);
-
-  //--------------------------------ANGKA 9 PINK----------------------//
-
-  var verticesNumberPink = [
-    //Sisi Kiri 9
-    0.04, 0.75, -0.04,
-    0.01, 0.65, -0.01,
-    0.01, 0.25, 0.01,
-    0.04, 0.35, 0.04,
-
-    //Right 9
-    0.34, 0.75, -0.34,
-    0.30, 0.65, -0.3,
-    0.30, 0.25, 0.3,
-    0.34, 0.35, 0.34,
-
-    //Upper 9
-    0.01, 0.65, 0.01,
-    0.30, 0.65, 0.3,
-
-    //Lower 9
-    0.01, 0.25, 0.01,
-    0.30, 0.25, 0.3,
-  ];
-
-  var buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticesNumberPink), gl.STATIC_DRAW);
-
-  //vertex shader
-  var vertexShaderCodeNumberPink = `
-    attribute vec3 cPosition;
-    void main() { 
-      float x = cPosition.x;
-      float y = cPosition.y;
-      float z = cPosition.z;
-      gl_PointSize = 10.0;
-      gl_Position = vec4(x, y, z, 1.0);
-    }
-    `;
-
-  var vertexShaderObject3 = gl.createShader(gl.VERTEX_SHADER);
-  gl.shaderSource(vertexShaderObject3, vertexShaderCodeNumberPink);
-  gl.compileShader(vertexShaderObject3);   //sampai sini jadi file .o
-
-  //fragment shader
-  var fragmentShaderCodeNumberPink = `
-    void main() {
-      precision mediump float;
-      float r = 0.977;
-      float g = 0.184;
-      float b = 0.707;
-      float a = 1.0;
-      gl_FragColor = vec4(r, g, b, a);
-    }
-    `;
-
-  var fragmentShaderObject3 = gl.createShader(gl.FRAGMENT_SHADER);
-  gl.shaderSource(fragmentShaderObject3, fragmentShaderCodeNumberPink);
-  gl.compileShader(fragmentShaderObject3);   //sampai sini jadi file .o
-
-  var shaderProgram3 = gl.createProgram(); //wadah executeable shadernya nanti (.exe)
-  gl.attachShader(shaderProgram3, vertexShaderObject3);
-  gl.attachShader(shaderProgram3, fragmentShaderObject3);
-
-  gl.linkProgram(shaderProgram3);
-  gl.useProgram(shaderProgram3);
-
-  // Mengajari GPU bagaimana caranya mengoleksi nilai posisi dari ARRAY_BUFFER
-  // Untuk setiap verteks yang sedang diproses
-
-  var cPosition = gl.getAttribLocation(shaderProgram3, "cPosition");
-  gl.vertexAttribPointer(cPosition, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(cPosition);
-
-  //PINK 9
-  gl.drawArrays(gl.LINE_STRIP, 0, 4);
-  gl.drawArrays(gl.LINE_STRIP, 4, 4);
-  gl.drawArrays(gl.LINES, 8, 2);
-  gl.drawArrays(gl.LINES, 10, 2);
+  //Lower 9
+  0.01, 0.25, 0.01, 0.977, 0.184, 0.707, //40
+  0.30, 0.25, 0.3, 0.977, 0.184, 0.707, //41
+];
 
   //--------------------------------HURUF T PINK / BELAKANG----------------------//
+var verticesLetterPink = [
+  //Atas T
+  -0.7, -0.1, -0.7, 0.977, 0.184, 0.707, //42
+  -0.7, -0.3, -0.7, 0.977, 0.184, 0.707,
+  0.0, -0.1, 0, 0.977, 0.184, 0.707,
+  0.0, -0.3, 0, 0.977, 0.184, 0.707, //45
 
-  var verticesLetterPink = [
+  //Bawah T
+  -0.47, -0.1, -0.47, 0.977, 0.184, 0.707, //46
+  -0.47, -0.8, -0.47, 0.977, 0.184, 0.707,
+  -0.23, -0.8, -0.23, 0.977, 0.184, 0.707,
+  -0.23, -0.1, -0.23, 0.977, 0.184, 0.707, //49
+];
 
-    //Atas T
-    -0.7, -0.1, -0.7,
-    -0.7, -0.3, -0.7,
-    0.0, -0.1, 0,
-    0.0, -0.3, 0,
+//--------------------------------HURUF T PUTIH / DEPAN ----------------------//
+var verticesTWhite = [
+  //Upper T
+  -0.75, -0.2, 0.75, 1, 1, 1, //50
+  -0.75, -0.4, 0.75, 1, 1, 1,
+  -0.05, -0.2, 0.05, 1, 1, 1,
+  -0.05, -0.4, 0.05, 1, 1, 1, //53
 
-    //Bawah T
-    -0.47, -0.1, -0.47,
-    -0.47, -0.8, -0.47,
-    -0.23, -0.8, -0.23,
-    -0.23, -0.1, -0.23,
+  //Lower T
+  -0.52, -0.2, 0.52, 1, 1, 1, //54
+  -0.52, -0.9, 0.52, 1, 1, 1, 
+  -0.28, -0.9, 0.28, 1, 1, 1,
+  -0.28, -0.2, 0.28, 1, 1, 1, //57
 
+  //Upper-Right T
+  0.0, -0.3, 0, 1, 1, 1, //58
+  -0.05, -0.4, 0.05, 1, 1, 1,
+  -0.05, -0.2, 0.05, 1, 1, 1,
+  0.0, -0.1, 0.0, 1, 1, 1, //61
 
-  ];
+  //Upper-Left T
+  -0.75, -0.2, 0.75, 1, 1, 1, //62
+  -0.7, -0.1, 0.7, 1, 1, 1,
+  -0.7, -0.3, 0.7, 1, 1, 1,
+  -0.75, -0.4, 0.75, 1, 1, 1, //65
 
-  var buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticesLetterPink), gl.STATIC_DRAW);
+  //LOWER SHADOW T
+  -0.28, -0.9, 0.28, 1, 1, 1, //66
+  -0.23, -0.8, 0.23, 1, 1, 1, //67
+];
 
-  //vertex shader
-  var vertexShaderCodeLetterPink = `
-    attribute vec3 dPosition;
-    void main() { 
-      float x = dPosition.x;
-      float y = dPosition.y;
-      float z = dPosition.z;
-      gl_PointSize = 10.0;
-      gl_Position = vec4(x, y, z, 1.0);
-    }
-    `;
+//--------------------------------HURUF A KUNING / BELAKANG ----------------------//
+var verticesAYellow = [
+  //Left A
+  0.20, -0.1, -0.2, 0.992, 0.855, 0.223, //68
+  -0.05, -0.9, -0.05, 0.992, 0.855, 0.223,
+  0.45, -0.1, -0.45, 0.992, 0.855, 0.223, //70
 
-  var vertexShaderObject4 = gl.createShader(gl.VERTEX_SHADER);
-  gl.shaderSource(vertexShaderObject4, vertexShaderCodeLetterPink);
-  gl.compileShader(vertexShaderObject4);   //sampai sini jadi file .o
+  //Right A
+  0.20, -0.1, -0.2, 0.992, 0.855, 0.223, //71
+  0.75, -0.9, -0.75, 0.992, 0.855, 0.223,
+  0.45, -0.1, -0.45, 0.992, 0.855, 0.223, //73
 
-  //fragment shader
-  var fragmentShaderCodeLetterPink = `
+  //Left Bottom A
+  -0.05, -0.9, -0.05, 0.992, 0.855, 0.223, //74
+  0.3, -0.9, -0.3, 0.992, 0.855, 0.223,
+  0.1, -0.5, -0.1, 0.992, 0.855, 0.223,
+  -0.1, -0.5, -0.1, 0.992, 0.855, 0.223, //77
+
+  //Left Bottom B
+  0.75, -0.9, -0.75, 0.992, 0.855, 0.223, //78
+  0.4, -0.9, -0.4, 0.992, 0.855, 0.223,
+  0.5, -0.5, -0.5, 0.992, 0.855, 0.223,
+  0.5, -0.5, -0.5, 0.992, 0.855, 0.223, //81
+
+];
+
+//--------------------------------HURUF A PINK / DEPAN----------------------//
+var verticesAPink = [
+  //Left A
+  0.25, -0.05, 0.25, 0.977, 0.184, 0.707, //82
+  0.0, -0.9, 0, 0.977, 0.184, 0.707,
+  0.55, -0.05, 0.55, 0.977, 0.184, 0.707, //84
+
+  //Right A
+  0.25, -0.05, 0.25, 0.977, 0.184, 0.707, //85
+  0.8, -0.9, 0.8, 0.977, 0.184, 0.707,
+  0.55, -0.05, 0.55, 0.977, 0.184, 0.707, //87
+
+  //Left Bottom A
+  0.00, -0.9, 0, 0.977, 0.184, 0.707, //88
+  0.3, -0.9, 0.3, 0.977, 0.184, 0.707,
+  0.3, -0.4, 0.3, 0.977, 0.184, 0.707,
+  -0.05, -0.4, 0.05, 0.977, 0.184, 0.707, //91
+
+  //Right Bottom A
+  0.8, -0.9, 0.8, 0.977, 0.184, 0.707, //92
+  0.4, -0.9, 0.4, 0.977, 0.184, 0.707,
+  0.6, -0.5, 0.6, 0.977, 0.184, 0.707,
+  0.6, -0.5, 0.6, 0.977, 0.184, 0.707, //95
+
+  //Middle A
+  0.3, -0.6, 0.3, 0.977, 0.184, 0.707, //96
+  0.6, -0.6, 0.6, 0.977, 0.184, 0.707,
+  0.4, -0.9, 0.4, 0.977, 0.184, 0.707, //98
+
+  //A OUTER
+  0.25, -0.05, 0.25, 0.977, 0.184, 0.707, //99
+  0.20, -0.1, 0.2, 0.977, 0.184, 0.707,
+  0.25, -0.1, 0.25, 0.977, 0.184, 0.707, //101
+];
+
+vertices = vertices.concat(verticesNumberYellow, verticesNumberWhite, verticesNumberPink, verticesLetterPink, verticesTWhite, verticesAYellow, verticesAPink)
+
+var buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW)
+
+var vertexShaderCode 
+  = `
+    attribute vec3 aPosition;  
+    attribute vec3 aColor;
+    uniform mat4 uModel;
+    uniform mat4 uView;
+    uniform mat4 uProjection;
+    varying vec3 vColor;
     void main() {
-      precision mediump float;
-      float r = 0.977;
-      float g = 0.184;
-      float b = 0.707;
-      float a = 1.0;
-      gl_FragColor = vec4(r, g, b, a);
-    }
-    `;
+        gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);
+        vColor = aColor;
+  }`
+var vertexShaderObject = gl.createShader(gl.VERTEX_SHADER)
+  gl.shaderSource(vertexShaderObject, vertexShaderCode)
+  gl.compileShader(vertexShaderObject)
 
-  var fragmentShaderObject4 = gl.createShader(gl.FRAGMENT_SHADER);
-  gl.shaderSource(fragmentShaderObject4, fragmentShaderCodeLetterPink);
-  gl.compileShader(fragmentShaderObject4);   //sampai sini jadi file .o
+var fragmentShaderCode = `
+  precision mediump float;
+  varying vec3 vColor;
+  void main() {
+      gl_FragColor = vec4(vColor, 1.0);
+  }
+  `
 
-  var shaderProgram4 = gl.createProgram(); //wadah executeable shadernya nanti (.exe)
-  gl.attachShader(shaderProgram4, vertexShaderObject4);
-  gl.attachShader(shaderProgram4, fragmentShaderObject4);
+  var fragmentShaderObject = gl.createShader(gl.FRAGMENT_SHADER)
+  gl.shaderSource(fragmentShaderObject, fragmentShaderCode)
+  gl.compileShader(fragmentShaderObject)
 
-  gl.linkProgram(shaderProgram4);
-  gl.useProgram(shaderProgram4);
+  var shaderProgram = gl.createProgram()
+  gl.attachShader(shaderProgram, vertexShaderObject)
+  gl.attachShader(shaderProgram, fragmentShaderObject)
+  gl.linkProgram(shaderProgram)
+  gl.useProgram(shaderProgram)
 
-  // Mengajari GPU bagaimana caranya mengoleksi nilai posisi dari ARRAY_BUFFER
-  // Untuk setiap verteks yang sedang diproses
+ // camera
 
-  var dPosition = gl.getAttribLocation(shaderProgram4, "dPosition");
-  gl.vertexAttribPointer(dPosition, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(dPosition);
+    // Variabel lokal
+    var thetaX = 0.0, thetaY = 0.0;
+    var freeze = false;
+    var horizontalSpeed = 0.0;
+    var verticalSpeed = 0.0;
+    var horizontalDelta = 0.0;
+    var verticalDelta = 0.0;
 
-  //PINK T
-  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-  gl.drawArrays(gl.TRIANGLE_FAN, 4, 4);
-  // gl.drawArrays(gl.LINES, 8, 2);
-  // gl.drawArrays(gl.LINES, 10, 2);
+    // Variabel pointer ke GLSL
+    var uModel = gl.getUniformLocation(shaderProgram, "uModel");
+    // View
+    var cameraX = 0.0;
+    var cameraZ = 7.5;
+    var uView = gl.getUniformLocation(shaderProgram, "uView");
+    var view = glMatrix.mat4.create();
+    glMatrix.mat4.lookAt(
+        view,
+        [cameraX, -1.0, cameraZ],    // the location of the eye or the camera
+        [cameraX, -1.0, 0],        // the point where the camera look at
+        [0.0, 1.0, 0.0]
+    );
+    // Projection
+    var uProjection = gl.getUniformLocation(shaderProgram, "uProjection");
+    var perspective = glMatrix.mat4.create();
+    glMatrix.mat4.perspective(perspective, 75*Math.PI/180, 1.0, 0.5, 50.0);
 
 
-  //--------------------------------HURUF T PUTIH / DEPAN ----------------------//
+    var aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
+    gl.vertexAttribPointer(aPosition, 3, gl.FLOAT, false, 
+        6 * Float32Array.BYTES_PER_ELEMENT, 
+        0);
+    gl.enableVertexAttribArray(aPosition);
+    var aColor = gl.getAttribLocation(shaderProgram, "aColor");
+    gl.vertexAttribPointer(aColor, 3, gl.FLOAT, false, 
+        6 * Float32Array.BYTES_PER_ELEMENT, 
+        3 * Float32Array.BYTES_PER_ELEMENT);
+    gl.enableVertexAttribArray(aColor);
 
-  var verticesTWhite = [
+// Grafika interaktif
+    // Tetikus
+    function onMouseClick(event) {
+      freeze = !freeze;
+  }
+  document.addEventListener("click", onMouseClick);
+  // Papan ketuk
+  function onKeydown(event) {
+      if (event.keyCode == 32) freeze = !freeze;  // spasi
+      // Gerakan horizontal: a/left ke kiri, d/right ke kanan
+      if (event.keyCode == 65 || event.keyCode == 37) {  // a
+          thetaY += 0.05;
+      } else if (event.keyCode == 68 || event.keyCode == 39) {   // d
+          thetaY -= 0.05;
+      }
+      // Gerakan vertikal: w/up ke atas, s/down ke bawah
+      if (event.keyCode == 87 || event.keyCode == 38) {  // w
+          thetaX -= 0.05;
+      } else if (event.keyCode == 83 || event.keyCode == 40) {   // s
+          thetaX += 0.05;
+      }
+  }
+  function onKeyup(event) {
+      if (event.keyCode == 32) freeze = !freeze;
+  }
 
-    //Upper T
-    -0.75, -0.2, 0.75,
-    -0.75, -0.4, 0.75,
-    -0.05, -0.2, 0.05,
-    -0.05, -0.4, 0.05,
+  document.addEventListener("keydown", onKeydown);
+  document.addEventListener("keyup", onKeyup);
+  
+  var isGoingRight = true, isScaling = true
+  var scaleX = 4, scaleY = 4, scaleZ = 4
+  function render() {
+      gl.enable(gl.DEPTH_TEST);
+      //            Merah     Hijau   Biru    Transparansi
+      gl.clearColor(0.0625, 0.0273, 0.125, 1.0);  //SOFT BLACK
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      horizontalDelta += horizontalSpeed;
+      verticalDelta -= verticalSpeed;
+      // console.log(theta, horizontalDelta, verticalDelta, horizontalSpeed, verticalSpeed)
+      var model = glMatrix.mat4.create(); // Membuat matriks identitas
+      glMatrix.mat4.translate(
+          model, model, [horizontalDelta, 0.0, 0.0]
+      );
+      glMatrix.mat4.scale(
+          model, model, [4, 4, 4]
+      );
+      glMatrix.mat4.rotateX(
+          model, model, 0
+      );
+      glMatrix.mat4.rotateY(
+          model, model, 0
+      );
+      glMatrix.mat4.rotateZ(
+          model, model, 0
+      );
 
-    //Lower T
-    -0.52, -0.2, 0.52,
-    -0.52, -0.9, 0.52,
-    -0.28, -0.9, 0.28,
-    -0.28, -0.2, 0.28,
+      // Number Yellow 09
+      gl.uniformMatrix4fv(uModel, false, model);
+      gl.uniformMatrix4fv(uView, false, view);
+      gl.uniformMatrix4fv(uProjection, false, perspective);
+      //0
+      gl.drawArrays(gl.LINE_LOOP, 0, 4);
+      gl.drawArrays(gl.LINE_LOOP, 4, 4);
+      //9
+      gl.drawArrays(gl.LINE_STRIP, 8, 5);
+      gl.drawArrays(gl.LINE_STRIP, 13, 4);
+      gl.drawArrays(gl.LINE_LOOP, 17, 4);
 
-    //Upper-Right T
-    0.0, -0.3, 0,
-    -0.05, -0.4, 0.05,
-    -0.05, -0.2, 0.05,
-    0.0, -0.1, 0.0,
 
-    //Upper-Left T
-    -0.75, -0.2, 0.75,
-    -0.7, -0.1, 0.7,
-    -0.7, -0.3, 0.7,
-    -0.75, -0.4, 0.75,
+      // 0 WHITE
+      var model_svn = glMatrix.mat4.create(); // Membuat matriks identitas
+      glMatrix.mat4.translate(
+          model_svn, model_svn, [-0.5, 0.0, 0.0]
+      );
+      glMatrix.mat4.scale(
+          model_svn, model_svn, [scaleX, scaleY, scaleZ]
+      );
+      glMatrix.mat4.rotateX(
+          model_svn, model_svn, 0
+      );
+      glMatrix.mat4.rotateY(
+          model_svn, model_svn, 0
+      );
+      glMatrix.mat4.rotateZ(
+          model_svn, model_svn, 0
+      );
+      gl.uniformMatrix4fv(uModel, false, model_svn);
+      gl.uniformMatrix4fv(uView, false, view);
+      gl.uniformMatrix4fv(uProjection, false, perspective);
+      gl.drawArrays(gl.LINE_STRIP, 21, 4);
+      gl.drawArrays(gl.LINES, 25, 2);
+      gl.drawArrays(gl.LINE_STRIP, 27, 3);
 
-    //LOWER SHADOW T
-    -0.28, -0.9, 0.28,
-    -0.23, -0.8, 0.23,
-  ];
 
-  var buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticesTWhite), gl.STATIC_DRAW);
+      //9 PINK
+      var model_e = glMatrix.mat4.create(); // Membuat matriks identitas
+      glMatrix.mat4.translate(
+          model_e, model_e, [0, 0, 0]
+      );
+      glMatrix.mat4.scale(
+          model_e, model_e, [1.2, 1.2, 1.2]
+      );
+      glMatrix.mat4.rotateX(
+          model_e, model_e, 0
+      );
+      glMatrix.mat4.rotateY(
+          model_e, model_e, thetaY
+      );
+      glMatrix.mat4.rotateZ(
+          model_e, model_e, 0
+      );
+      gl.uniformMatrix4fv(uModel, false, model_e);
+      gl.uniformMatrix4fv(uView, false, view);
+      gl.uniformMatrix4fv(uProjection, false, perspective);
+      gl.drawArrays(gl.LINE_STRIP, 30, 4);
+      gl.drawArrays(gl.LINE_STRIP, 34, 4);
+      gl.drawArrays(gl.LINES, 38, 2);
+      gl.drawArrays(gl.LINES, 40, 2);
 
-  //vertex shader
-  var vertexShaderCodeTWhite = `
-    attribute vec3 ePosition;
-    void main() { 
-      float x = ePosition.x;
-      float y = ePosition.y;
-      float z = ePosition.z;
-      gl_PointSize = 10.0;
-      gl_Position = vec4(x, y, z, 1.0);
-    }
-    `;
+      // T
+      var model_t = glMatrix.mat4.create(); // Membuat matriks identitas
+      glMatrix.mat4.translate(
+          model_t, model_t, [0, 0, 0]
+      );
+      glMatrix.mat4.scale(
+          model_t, model_t, [4, 4, 4]
+      );
+      glMatrix.mat4.rotateX(
+          model_t, model_t, thetaX
+      );
+      glMatrix.mat4.rotateY(
+          model_t, model_t, 0
+      );
+      glMatrix.mat4.rotateZ(
+          model_t, model_t, 0
+      );
+      gl.uniformMatrix4fv(uModel, false, model_t);
+      gl.uniformMatrix4fv(uView, false, view);
+      gl.uniformMatrix4fv(uProjection, false, perspective);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 42, 4);
+      gl.drawArrays(gl.TRIANGLE_FAN, 46, 4);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 50, 4);
+      gl.drawArrays(gl.TRIANGLE_FAN, 54, 4);
+      gl.drawArrays(gl.LINES, 58, 4);
+      gl.drawArrays(gl.LINES, 62, 2);
+      gl.drawArrays(gl.LINES, 66, 2);
 
-  var vertexShaderObject5 = gl.createShader(gl.VERTEX_SHADER);
-  gl.shaderSource(vertexShaderObject5, vertexShaderCodeTWhite);
-  gl.compileShader(vertexShaderObject5);   //sampai sini jadi file .o
+      // A
+      var model_a = glMatrix.mat4.create(); // Membuat matriks identitas
+      glMatrix.mat4.translate(
+          model_a, model_a, [0, 0, 0]
+      );
+      glMatrix.mat4.scale(
+          model_a, model_a, [4, 4, 4]
+      );
+      glMatrix.mat4.rotateX(
+          model_a, model_a, thetaX
+      );
+      glMatrix.mat4.rotateY(
+          model_a, model_a, 0
+      );
+      glMatrix.mat4.rotateZ(
+          model_a, model_a, 0
+      );
+      gl.uniformMatrix4fv(uModel, false, model_a);
+      gl.uniformMatrix4fv(uView, false, view);
+      gl.uniformMatrix4fv(uProjection, false, perspective);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 68, 3);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 71, 3);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 74, 3);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 77, 3);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 80, 3);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 83, 3);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 86, 3);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 90, 3);
+      gl.drawArrays(gl.TRIANGLES, 94, 3);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 97, 3);
 
-  //fragment shader
-  var fragmentShaderCodeTWhite = `
-    void main() {
-      precision mediump float;
-      float r = 1.0;
-      float g = 1.0;
-      float b = 1.0;
-      float a = 1.0;
-      gl_FragColor = vec4(r, g, b, a);
-    }
-    `;
+      requestAnimationFrame(render);
 
-  var fragmentShaderObject5 = gl.createShader(gl.FRAGMENT_SHADER);
-  gl.shaderSource(fragmentShaderObject5, fragmentShaderCodeTWhite);
-  gl.compileShader(fragmentShaderObject5);   //sampai sini jadi file .o
+      if (!freeze) {
+          if(model[12]>=3.5 && isGoingRight) isGoingRight = false
+          else if(model[12] <= -1.5) isGoingRight = true
+          if(isGoingRight){
+              horizontalDelta+=0.0247
+          }
+          else {
+              horizontalDelta-=0.0247
+          }
 
-  var shaderProgram5 = gl.createProgram(); //wadah executeable shadernya nanti (.exe)
-  gl.attachShader(shaderProgram5, vertexShaderObject5);
-  gl.attachShader(shaderProgram5, fragmentShaderObject5);
-
-  gl.linkProgram(shaderProgram5);
-  gl.useProgram(shaderProgram5);
-
-  // Mengajari GPU bagaimana caranya mengoleksi nilai posisi dari ARRAY_BUFFER
-  // Untuk setiap verteks yang sedang diproses
-
-  var ePosition = gl.getAttribLocation(shaderProgram5, "ePosition");
-  gl.vertexAttribPointer(ePosition, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(ePosition);
-
-  //WHITE  T
-  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-  gl.drawArrays(gl.TRIANGLE_FAN, 4, 4);
-  gl.drawArrays(gl.LINES, 8, 4);
-  gl.drawArrays(gl.LINES, 12, 2);
-  gl.drawArrays(gl.LINES, 16, 2);
-
-  //--------------------------------HURUF A KUNING / BELAKANG ----------------------//
-
-  var verticesAYellow = [
-    //Left A
-    0.20, -0.1, -0.2,
-    -0.05, -0.9, -0.05,
-    0.45, -0.1, -0.45,
-
-    //Right A
-    0.20, -0.1, -0.2,
-    0.75, -0.9, -0.75,
-    0.45, -0.1, -0.45,
-
-    //Left Bottom A
-    -0.05, -0.9, -0.05,
-    0.3, -0.9, -0.3,
-    0.1, -0.5, -0.1,
-    -0.1, -0.5, -0.1,
-
-    //Left Bottom B
-    0.75, -0.9, -0.75,
-    0.4, -0.9, -0.4,
-    0.5, -0.5, -0.5,
-    0.5, -0.5, -0.5,
-
-    //Middle A
-    0.1, -0.6, -0.1,
-    0.5, -0.6, -0.5,
-    0.4, -0.9 -0.4,
-
-  ];
-
-  var buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticesAYellow), gl.STATIC_DRAW);
-
-  //vertex shader
-  var vertexShaderCodeAYellow = `
-    attribute vec3 fPosition;
-    void main() { 
-      float x = fPosition.x;
-      float y = fPosition.y;
-      float z = fPosition.z;
-      gl_PointSize = 10.0;
-      gl_Position = vec4(x, y, z, 1.0);
-    }
-    `;
-
-  var vertexShaderObject6 = gl.createShader(gl.VERTEX_SHADER);
-  gl.shaderSource(vertexShaderObject6, vertexShaderCodeAYellow);
-  gl.compileShader(vertexShaderObject6);   //sampai sini jadi file .o
-
-  //fragment shader
-  var fragmentShaderCodeAYellow = `
-    void main() {
-      precision mediump float;
-      float r = 0.992;
-      float g = 0.855;
-      float b = 0.223;
-      float a = 1.0;
-      gl_FragColor = vec4(r, g, b, a);
-    }
-    `;
-
-  var fragmentShaderObject6 = gl.createShader(gl.FRAGMENT_SHADER);
-  gl.shaderSource(fragmentShaderObject6, fragmentShaderCodeAYellow);
-  gl.compileShader(fragmentShaderObject6);   //sampai sini jadi file .o
-
-  var shaderProgram6 = gl.createProgram(); //wadah executeable shadernya nanti (.exe)
-  gl.attachShader(shaderProgram6, vertexShaderObject6);
-  gl.attachShader(shaderProgram6, fragmentShaderObject6);
-
-  gl.linkProgram(shaderProgram6);
-  gl.useProgram(shaderProgram6);
-
-  // Mengajari GPU bagaimana caranya mengoleksi nilai posisi dari ARRAY_BUFFER
-  // Untuk setiap verteks yang sedang diproses
-
-  var fPosition = gl.getAttribLocation(shaderProgram6, "fPosition");
-  gl.vertexAttribPointer(fPosition, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(fPosition);
-
-  //YELLOW A
-  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 3);
-  gl.drawArrays(gl.TRIANGLE_STRIP, 3, 3);
-  gl.drawArrays(gl.TRIANGLE_STRIP, 6, 3);
-  gl.drawArrays(gl.TRIANGLE_STRIP, 10, 3);
- 
-
-  //--------------------------------HURUF A PINK / DEPAN----------------------//
-
-  var verticesAPink = [
-    //Left A
-    0.25, -0.05, 0.25,
-    0.0, -0.9, 0,
-    0.55, -0.05, 0.55,
-
-    //Right A
-    0.25, -0.05, 0.25,
-    0.8, -0.9, 0.8,
-    0.55, -0.05, 0.55,
-
-    //Left Bottom A
-    0.00, -0.9, 0,
-    0.3, -0.9, 0.3,
-    0.3, -0.4, 0.3,
-    -0.05, -0.4, 0.05,
-
-    //Right Bottom A
-    0.8, -0.9, 0.8,
-    0.4, -0.9, 0.4,
-    0.6, -0.5, 0.6,
-    0.6, -0.5, 0.6,
-
-    //Middle A
-    0.3, -0.6, 0.3,
-    0.6, -0.6, 0.6,
-    0.4, -0.9, 0.4,
-
-    //A OUTER
-    0.25, -0.05, 0.25,
-    0.20, -0.1, 0.2,
-    0.25, -0.1, 0.25,
-  ];
-
-  var buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticesAPink), gl.STATIC_DRAW);
-
-  //vertex shader
-  var vertexShaderCodeAPink = `
-    attribute vec3 gPosition;
-    void main() { 
-      float x = gPosition.x;
-      float y = gPosition.y;
-      float z = gPosition.z;
-      gl_PointSize = 10.0;
-      gl_Position = vec4(x, y, z, 1.0);
-    }
-    `;
-
-  var vertexShaderObject7 = gl.createShader(gl.VERTEX_SHADER);
-  gl.shaderSource(vertexShaderObject7, vertexShaderCodeAPink);
-  gl.compileShader(vertexShaderObject7);   //sampai sini jadi file .o
-
-  //fragment shader
-  var fragmentShaderCodeAPink = `
-    void main() {
-      precision mediump float;
-      float r = 0.977;
-      float g = 0.184;
-      float b = 0.707;
-      float a = 1.0;
-      gl_FragColor = vec4(r, g, b, a);
-    }
-    `;
-
-  var fragmentShaderObject7 = gl.createShader(gl.FRAGMENT_SHADER);
-  gl.shaderSource(fragmentShaderObject7, fragmentShaderCodeAPink);
-  gl.compileShader(fragmentShaderObject7);   //sampai sini jadi file .o
-
-  var shaderProgram7 = gl.createProgram(); //wadah executeable shadernya nanti (.exe)
-  gl.attachShader(shaderProgram7, vertexShaderObject7);
-  gl.attachShader(shaderProgram7, fragmentShaderObject7);
-
-  gl.linkProgram(shaderProgram7);
-  gl.useProgram(shaderProgram7);
-
-  // Mengajari GPU bagaimana caranya mengoleksi nilai posisi dari ARRAY_BUFFER
-  // Untuk setiap verteks yang sedang diproses
-
-  var gPosition = gl.getAttribLocation(shaderProgram7, "gPosition");
-  gl.vertexAttribPointer(gPosition, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(gPosition);
-
-  //PINK A
-  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 3);
-  gl.drawArrays(gl.TRIANGLE_STRIP, 3, 3);
-  gl.drawArrays(gl.TRIANGLE_STRIP, 6, 3);
-  gl.drawArrays(gl.TRIANGLE_STRIP, 10, 3);
-  gl.drawArrays(gl.TRIANGLES, 14, 3);
-  gl.drawArrays(gl.TRIANGLE_STRIP, 17, 3);
+          if(scaleX>=4) isScaling = false
+          else if(scaleX<=3) isScaling = true
+          if(isScaling){
+              scaleX+=0.01
+              scaleY+=0.01
+              scaleZ+=0.01
+          }
+          else if(!isScaling) {
+              scaleX-=0.01
+              scaleY-=0.01
+              scaleZ-=0.01
+          }
+      }
+  }
+  requestAnimationFrame(render);
+  console.log(gl.getError())
 }
 
 window.onload = main;
