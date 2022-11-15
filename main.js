@@ -9,34 +9,34 @@ function main() {
 
   var verticesNumberYellow = [
     //Inner 0
-    -0.5, 0.7,
-    -0.5, 0.2,
-    -0.3, 0.2,
-    -0.3, 0.7,
+     -0.5, 0.7, -0.5,
+     -0.5, 0.2, -0.5,
+     -0.3, 0.2, -0.5,
+     -0.3, 0.7, -0.5,
 
     //Outer 0
-    -0.7, 0.9,
-    -0.7, 0.0,
-    -0.1, 0.0,
-    -0.1, 0.9,
+    -0.7, 0.9, 0.5,
+    -0.7, 0.0, 0.5, 
+    -0.1, 0.0, 0.5, 
+    -0.1, 0.9, 0.5,
 
     //Outer 9
-    -0.4, 0.0,
-    -0.4, -0.2,
-    0.5, -0.2,
-    0.5, 0.9,
-    -0.1, 0.9,
+    -0.4, 0.0, 0.4,
+    -0.4, -0.2, 0.4,
+    0.5, -0.2, 0.5,
+    0.5, 0.9, 0.5,
+    -0.1, 0.9, 0.1,
     //Outer 9
-    -0.1, 0.20,
-    0.2, 0.20,
-    0.2, 0.0,
-    -0.1, 0.0,
+    -0.1, 0.20, 0.1,
+    0.2, 0.20, 0.2,
+    0.2, 0.0, 0.2,
+    -0.1, 0.0, 0.1,
 
     //Inner 9
-    0.04, 0.75,
-    0.34, 0.75,
-    0.34, 0.35,
-    0.04, 0.35,
+    0.04, 0.75, -0.04,
+    0.34, 0.75, -0.34,
+    0.34, 0.35, -0.34,
+    0.04, 0.35, -0.04,
   ];
 
   var buffer = gl.createBuffer();
@@ -45,12 +45,13 @@ function main() {
 
   //vertex shader
   var vertexShaderCodeNumberYellow = `
-    attribute vec2 aPosition;
+    attribute vec3 aPosition;
     void main() { 
       float x = aPosition.x;
       float y = aPosition.y;
+      float z = aPosition.z;
       gl_PointSize = 10.0;
-      gl_Position = vec4(x, y, 0.0, 1.0);
+      gl_Position = vec4(x, y, z, 1.0);
     }
     `;
 
@@ -85,7 +86,7 @@ function main() {
   // Untuk setiap verteks yang sedang diproses
 
   var aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
-  gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribPointer(aPosition, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(aPosition);
 
   // Only continue if WebGL is available and working
@@ -113,19 +114,19 @@ function main() {
 
   var verticesNumberWhite = [
     //Upper 0
-    -0.7, 0.9,
-    -0.6, 0.95,
-    0.0, 0.95,
-    -0.1, 0.9,
+    -0.7, 0.9, -0.7,
+    -0.6, 0.95, -0.6,
+    0.0, 0.95, 0.0,
+    -0.1, 0.9, -0.1,
 
     //Upper-Right 0
-    0.0, 0.95,
-    0.0, 0.9,
+    0.0, 0.95, 0,
+    0.0, 0.9, 0,
 
     //Lower-Right 0
-    -0.1, 0.0,
-    0.0, 0.1,
-    0.0, 0.2,
+    -0.1, 0.0, -0.1,
+    0.0, 0.1, 0,
+    0.0, 0.2, 0,
   ];
 
   var buffer = gl.createBuffer();
@@ -134,12 +135,13 @@ function main() {
 
   //vertex shader
   var vertexShaderCodeNumberWhite = `
-    attribute vec2 bPosition;
+    attribute vec3 bPosition;
     void main() { 
       float x = bPosition.x;
       float y = bPosition.y;
+      float z = bPosition.z;
       gl_PointSize = 10.0;
-      gl_Position = vec4(x, y, 0.0, 1.0);
+      gl_Position = vec4(x, y, z, 1.0);
     }
     `;
 
@@ -174,7 +176,7 @@ function main() {
   // Untuk setiap verteks yang sedang diproses
 
   var bPosition = gl.getAttribLocation(shaderProgram2, "bPosition");
-  gl.vertexAttribPointer(bPosition, 2, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribPointer(bPosition, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(bPosition);
 
   //WHITE 0
@@ -185,25 +187,25 @@ function main() {
   //--------------------------------ANGKA 9 PINK----------------------//
 
   var verticesNumberPink = [
-    //Left 9
-    0.04, 0.75,
-    0.01, 0.65,
-    0.01, 0.25,
-    0.04, 0.35,
+    //Sisi Kiri 9
+    0.04, 0.75, -0.04,
+    0.01, 0.65, -0.01,
+    0.01, 0.25, 0.01,
+    0.04, 0.35, 0.04,
 
     //Right 9
-    0.34, 0.75,
-    0.30, 0.65,
-    0.30, 0.25,
-    0.34, 0.35,
+    0.34, 0.75, -0.34,
+    0.30, 0.65, -0.3,
+    0.30, 0.25, 0.3,
+    0.34, 0.35, 0.34,
 
     //Upper 9
-    0.01, 0.65,
-    0.30, 0.65,
+    0.01, 0.65, 0.01,
+    0.30, 0.65, 0.3,
 
     //Lower 9
-    0.01, 0.25,
-    0.30, 0.25,
+    0.01, 0.25, 0.01,
+    0.30, 0.25, 0.3,
   ];
 
   var buffer = gl.createBuffer();
@@ -212,12 +214,13 @@ function main() {
 
   //vertex shader
   var vertexShaderCodeNumberPink = `
-    attribute vec2 cPosition;
+    attribute vec3 cPosition;
     void main() { 
       float x = cPosition.x;
       float y = cPosition.y;
+      float z = cPosition.z;
       gl_PointSize = 10.0;
-      gl_Position = vec4(x, y, 0.0, 1.0);
+      gl_Position = vec4(x, y, z, 1.0);
     }
     `;
 
@@ -252,7 +255,7 @@ function main() {
   // Untuk setiap verteks yang sedang diproses
 
   var cPosition = gl.getAttribLocation(shaderProgram3, "cPosition");
-  gl.vertexAttribPointer(cPosition, 2, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribPointer(cPosition, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(cPosition);
 
   //PINK 9
@@ -261,21 +264,21 @@ function main() {
   gl.drawArrays(gl.LINES, 8, 2);
   gl.drawArrays(gl.LINES, 10, 2);
 
-  //--------------------------------HURUF T PINK----------------------//
+  //--------------------------------HURUF T PINK / BELAKANG----------------------//
 
   var verticesLetterPink = [
 
-    //Upper T
-    -0.7, -0.1,
-    -0.7, -0.3,
-    0.0, -0.1,
-    0.0, -0.3,
+    //Atas T
+    -0.7, -0.1, -0.7,
+    -0.7, -0.3, -0.7,
+    0.0, -0.1, 0,
+    0.0, -0.3, 0,
 
-    //Lower T
-    -0.47, -0.1,
-    -0.47, -0.8,
-    -0.23, -0.8,
-    -0.23, -0.1,
+    //Bawah T
+    -0.47, -0.1, -0.47,
+    -0.47, -0.8, -0.47,
+    -0.23, -0.8, -0.23,
+    -0.23, -0.1, -0.23,
 
 
   ];
@@ -286,12 +289,13 @@ function main() {
 
   //vertex shader
   var vertexShaderCodeLetterPink = `
-    attribute vec2 dPosition;
+    attribute vec3 dPosition;
     void main() { 
       float x = dPosition.x;
       float y = dPosition.y;
+      float z = dPosition.z;
       gl_PointSize = 10.0;
-      gl_Position = vec4(x, y, 0.0, 1.0);
+      gl_Position = vec4(x, y, z, 1.0);
     }
     `;
 
@@ -326,7 +330,7 @@ function main() {
   // Untuk setiap verteks yang sedang diproses
 
   var dPosition = gl.getAttribLocation(shaderProgram4, "dPosition");
-  gl.vertexAttribPointer(dPosition, 2, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribPointer(dPosition, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(dPosition);
 
   //PINK T
@@ -336,37 +340,37 @@ function main() {
   // gl.drawArrays(gl.LINES, 10, 2);
 
 
-  //--------------------------------HURUF T PUTIH----------------------//
+  //--------------------------------HURUF T PUTIH / DEPAN ----------------------//
 
   var verticesTWhite = [
 
     //Upper T
-    -0.75, -0.2,
-    -0.75, -0.4,
-    -0.05, -0.2,
-    -0.05, -0.4,
+    -0.75, -0.2, 0.75,
+    -0.75, -0.4, 0.75,
+    -0.05, -0.2, 0.05,
+    -0.05, -0.4, 0.05,
 
     //Lower T
-    -0.52, -0.2,
-    -0.52, -0.9,
-    -0.28, -0.9,
-    -0.28, -0.2,
+    -0.52, -0.2, 0.52,
+    -0.52, -0.9, 0.52,
+    -0.28, -0.9, 0.28,
+    -0.28, -0.2, 0.28,
 
     //Upper-Right T
-    0.0, -0.3,
-    -0.05, -0.4,
-    -0.05, -0.2,
-    0.0, -0.1,
+    0.0, -0.3, 0,
+    -0.05, -0.4, 0.05,
+    -0.05, -0.2, 0.05,
+    0.0, -0.1, 0.0,
 
     //Upper-Left T
-    -0.75, -0.2,
-    -0.7, -0.1,
-    -0.7, -0.3,
-    -0.75, -0.4,
+    -0.75, -0.2, 0.75,
+    -0.7, -0.1, 0.7,
+    -0.7, -0.3, 0.7,
+    -0.75, -0.4, 0.75,
 
     //LOWER SHADOW T
-    -0.28, -0.9,
-    -0.23, -0.8,
+    -0.28, -0.9, 0.28,
+    -0.23, -0.8, 0.23,
   ];
 
   var buffer = gl.createBuffer();
@@ -375,12 +379,13 @@ function main() {
 
   //vertex shader
   var vertexShaderCodeTWhite = `
-    attribute vec2 ePosition;
+    attribute vec3 ePosition;
     void main() { 
       float x = ePosition.x;
       float y = ePosition.y;
+      float z = ePosition.z;
       gl_PointSize = 10.0;
-      gl_Position = vec4(x, y, 0.0, 1.0);
+      gl_Position = vec4(x, y, z, 1.0);
     }
     `;
 
@@ -415,7 +420,7 @@ function main() {
   // Untuk setiap verteks yang sedang diproses
 
   var ePosition = gl.getAttribLocation(shaderProgram5, "ePosition");
-  gl.vertexAttribPointer(ePosition, 2, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribPointer(ePosition, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(ePosition);
 
   //WHITE  T
@@ -425,35 +430,35 @@ function main() {
   gl.drawArrays(gl.LINES, 12, 2);
   gl.drawArrays(gl.LINES, 16, 2);
 
-  //--------------------------------HURUF A KUNING----------------------//
+  //--------------------------------HURUF A KUNING / BELAKANG ----------------------//
 
   var verticesAYellow = [
     //Left A
-    0.20, -0.1,
-    -0.05, -0.9,
-    0.45, -0.1,
+    0.20, -0.1, -0.2,
+    -0.05, -0.9, -0.05,
+    0.45, -0.1, -0.45,
 
     //Right A
-    0.20, -0.1,
-    0.75, -0.9,
-    0.45, -0.1,
+    0.20, -0.1, -0.2,
+    0.75, -0.9, -0.75,
+    0.45, -0.1, -0.45,
 
     //Left Bottom A
-    -0.05, -0.9,
-    0.3, -0.9,
-    0.1, -0.5,
-    -0.1, -0.5,
+    -0.05, -0.9, -0.05,
+    0.3, -0.9, -0.3,
+    0.1, -0.5, -0.1,
+    -0.1, -0.5, -0.1,
 
     //Left Bottom B
-    0.75, -0.9,
-    0.4, -0.9,
-    0.5, -0.5,
-    0.5, -0.5,
+    0.75, -0.9, -0.75,
+    0.4, -0.9, -0.4,
+    0.5, -0.5, -0.5,
+    0.5, -0.5, -0.5,
 
     //Middle A
-    0.1, -0.6,
-    0.5, -0.6,
-    0.4, -0.9
+    0.1, -0.6, -0.1,
+    0.5, -0.6, -0.5,
+    0.4, -0.9 -0.4,
 
   ];
 
@@ -463,12 +468,13 @@ function main() {
 
   //vertex shader
   var vertexShaderCodeAYellow = `
-    attribute vec2 fPosition;
+    attribute vec3 fPosition;
     void main() { 
       float x = fPosition.x;
       float y = fPosition.y;
+      float z = fPosition.z;
       gl_PointSize = 10.0;
-      gl_Position = vec4(x, y, 0.0, 1.0);
+      gl_Position = vec4(x, y, z, 1.0);
     }
     `;
 
@@ -503,7 +509,7 @@ function main() {
   // Untuk setiap verteks yang sedang diproses
 
   var fPosition = gl.getAttribLocation(shaderProgram6, "fPosition");
-  gl.vertexAttribPointer(fPosition, 2, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribPointer(fPosition, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(fPosition);
 
   //YELLOW A
@@ -511,42 +517,42 @@ function main() {
   gl.drawArrays(gl.TRIANGLE_STRIP, 3, 3);
   gl.drawArrays(gl.TRIANGLE_STRIP, 6, 3);
   gl.drawArrays(gl.TRIANGLE_STRIP, 10, 3);
-  gl.drawArrays(gl.TRIANGLES, 14, 3);
+ 
 
-  //--------------------------------HURUF A PINK----------------------//
+  //--------------------------------HURUF A PINK / DEPAN----------------------//
 
   var verticesAPink = [
     //Left A
-    0.25, -0.05,
-    0.0, -0.9,
-    0.55, -0.05,
+    0.25, -0.05, 0.25,
+    0.0, -0.9, 0,
+    0.55, -0.05, 0.55,
 
     //Right A
-    0.25, -0.05,
-    0.8, -0.9,
-    0.55, -0.05,
+    0.25, -0.05, 0.25,
+    0.8, -0.9, 0.8,
+    0.55, -0.05, 0.55,
 
     //Left Bottom A
-    0.00, -0.9,
-    0.3, -0.9,
-    0.3, -0.4,
-    -0.05, -0.4,
+    0.00, -0.9, 0,
+    0.3, -0.9, 0.3,
+    0.3, -0.4, 0.3,
+    -0.05, -0.4, 0.05,
 
     //Right Bottom A
-    0.8, -0.9,
-    0.4, -0.9,
-    0.6, -0.5,
-    0.6, -0.5,
+    0.8, -0.9, 0.8,
+    0.4, -0.9, 0.4,
+    0.6, -0.5, 0.6,
+    0.6, -0.5, 0.6,
 
     //Middle A
-    0.3, -0.6,
-    0.6, -0.6,
-    0.4, -0.9,
+    0.3, -0.6, 0.3,
+    0.6, -0.6, 0.6,
+    0.4, -0.9, 0.4,
 
     //A OUTER
-    0.25, -0.05,
-    0.20, -0.1,
-    0.25, -0.1
+    0.25, -0.05, 0.25,
+    0.20, -0.1, 0.2,
+    0.25, -0.1, 0.25,
   ];
 
   var buffer = gl.createBuffer();
@@ -555,12 +561,13 @@ function main() {
 
   //vertex shader
   var vertexShaderCodeAPink = `
-    attribute vec2 gPosition;
+    attribute vec3 gPosition;
     void main() { 
       float x = gPosition.x;
       float y = gPosition.y;
+      float z = gPosition.z;
       gl_PointSize = 10.0;
-      gl_Position = vec4(x, y, 0.0, 1.0);
+      gl_Position = vec4(x, y, z, 1.0);
     }
     `;
 
@@ -595,7 +602,7 @@ function main() {
   // Untuk setiap verteks yang sedang diproses
 
   var gPosition = gl.getAttribLocation(shaderProgram7, "gPosition");
-  gl.vertexAttribPointer(gPosition, 2, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribPointer(gPosition, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(gPosition);
 
   //PINK A
@@ -613,3 +620,4 @@ window.onload = main;
 // 1. Mengubah hexadecimal menjadi RGB adalah dengan menggunakan fitur konversi
 // pada laman https://www.webfx.com/web-design/hex-to-rgb/ lalu membagi nilai tiap komponen dengan 256
 // 2. Untuk kombinasi warna dalam hexadecimal dicari pada laman https://colorhunt.co/palettes/yellow
+// 3. Tidak banyak yang diubah dari koordinat karena pada tugas pertama sudah berbentuk 3D
