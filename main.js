@@ -311,13 +311,14 @@ var fragmentShaderCode = `
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
       horizontalDelta += horizontalSpeed;
       verticalDelta -= verticalSpeed;
-      // console.log(theta, horizontalDelta, verticalDelta, horizontalSpeed, verticalSpeed)
+
+      // 09 YELLOW
       var model = glMatrix.mat4.create(); // Membuat matriks identitas
       glMatrix.mat4.translate(
           model, model, [horizontalDelta, 0.0, 0.0]
       );
       glMatrix.mat4.scale(
-          model, model, [4, 4, 4]
+          model, model, [2,2,2]
       );
       glMatrix.mat4.rotateX(
           model, model, 0
@@ -329,7 +330,6 @@ var fragmentShaderCode = `
           model, model, 0
       );
 
-      // Number Yellow 09
       gl.uniformMatrix4fv(uModel, false, model);
       gl.uniformMatrix4fv(uView, false, view);
       gl.uniformMatrix4fv(uProjection, false, perspective);
@@ -340,53 +340,11 @@ var fragmentShaderCode = `
       gl.drawArrays(gl.LINE_STRIP, 8, 5);
       gl.drawArrays(gl.LINE_STRIP, 13, 4);
       gl.drawArrays(gl.LINE_LOOP, 17, 4);
-
-
-      // 0 WHITE
-      var model_svn = glMatrix.mat4.create(); // Membuat matriks identitas
-      glMatrix.mat4.translate(
-          model_svn, model_svn, [-0.5, 0.0, 0.0]
-      );
-      glMatrix.mat4.scale(
-          model_svn, model_svn, [scaleX, scaleY, scaleZ]
-      );
-      glMatrix.mat4.rotateX(
-          model_svn, model_svn, 0
-      );
-      glMatrix.mat4.rotateY(
-          model_svn, model_svn, 0
-      );
-      glMatrix.mat4.rotateZ(
-          model_svn, model_svn, 0
-      );
-      gl.uniformMatrix4fv(uModel, false, model_svn);
-      gl.uniformMatrix4fv(uView, false, view);
-      gl.uniformMatrix4fv(uProjection, false, perspective);
+      //0 WHITE
       gl.drawArrays(gl.LINE_STRIP, 21, 4);
       gl.drawArrays(gl.LINES, 25, 2);
       gl.drawArrays(gl.LINE_STRIP, 27, 3);
-
-
-      //9 PINK
-      var model_e = glMatrix.mat4.create(); // Membuat matriks identitas
-      glMatrix.mat4.translate(
-          model_e, model_e, [0, 0, 0]
-      );
-      glMatrix.mat4.scale(
-          model_e, model_e, [1.2, 1.2, 1.2]
-      );
-      glMatrix.mat4.rotateX(
-          model_e, model_e, 0
-      );
-      glMatrix.mat4.rotateY(
-          model_e, model_e, thetaY
-      );
-      glMatrix.mat4.rotateZ(
-          model_e, model_e, 0
-      );
-      gl.uniformMatrix4fv(uModel, false, model_e);
-      gl.uniformMatrix4fv(uView, false, view);
-      gl.uniformMatrix4fv(uProjection, false, perspective);
+      //9
       gl.drawArrays(gl.LINE_STRIP, 30, 4);
       gl.drawArrays(gl.LINE_STRIP, 34, 4);
       gl.drawArrays(gl.LINES, 38, 2);
@@ -447,9 +405,9 @@ var fragmentShaderCode = `
       gl.drawArrays(gl.TRIANGLE_STRIP, 80, 3);
       gl.drawArrays(gl.TRIANGLE_STRIP, 83, 3);
       gl.drawArrays(gl.TRIANGLE_STRIP, 86, 3);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 90, 3);
-      gl.drawArrays(gl.TRIANGLES, 94, 3);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 97, 3);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 89, 3);
+      gl.drawArrays(gl.TRIANGLES, 92, 3);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 95, 3);
 
       requestAnimationFrame(render);
 
@@ -457,10 +415,10 @@ var fragmentShaderCode = `
           if(model[12]>=3.5 && isGoingRight) isGoingRight = false
           else if(model[12] <= -1.5) isGoingRight = true
           if(isGoingRight){
-              horizontalDelta+=0.0247
+              horizontalDelta+=0.0009
           }
           else {
-              horizontalDelta-=0.0247
+              horizontalDelta-=0.0009
           }
 
           if(scaleX>=4) isScaling = false
@@ -488,3 +446,4 @@ window.onload = main;
 // pada laman https://www.webfx.com/web-design/hex-to-rgb/ lalu membagi nilai tiap komponen dengan 256
 // 2. Untuk kombinasi warna dalam hexadecimal dicari pada laman https://colorhunt.co/palettes/yellow
 // 3. Tidak banyak yang diubah dari koordinat karena pada tugas pertama sudah berbentuk 3D
+// 4. Menghadapi kendala dalam membuat model 3D dinamis dengan GLMatrix, akan didebug dalam waktu dekat
