@@ -376,7 +376,7 @@ function main() {
     var uLightConstant = gl.getUniformLocation(shaderProgram, "uLightConstant");
     var uAmbientIntensity = gl.getUniformLocation(shaderProgram, "uAmbientIntensity");
     gl.uniform3fv(uLightConstant, [1.0, 1.0, 1.0]);   // warna sumber cahaya: oranye
-    gl.uniform1f(uAmbientIntensity, 1.0);               // intensitas cahaya: 40%
+    gl.uniform1f(uAmbientIntensity, 0.309);               // intensitas cahaya: 300+009 = 0.309%
     var uLightPosition = gl.getUniformLocation(shaderProgram, "uLightPosition");
     gl.uniform3fv(uLightPosition, [2.0, 0.0, 0.0]);
     var uNormalModel = gl.getUniformLocation(shaderProgram, "uNormalModel");
